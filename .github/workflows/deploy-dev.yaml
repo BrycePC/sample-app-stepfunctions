@@ -11,6 +11,13 @@ on:
 #      - 'main'
 #    types: [completed]
 
+env:
+  awsaccount_tools: '905618979966'
+  awsaccount_target: '887977420079'
+  environment: sand
+  app_name: sample-app-stepfunctions
+  stack_name: sample-app-stepfunctions-sand
+  system: sample
 jobs:
 
   #  if_checks_failed:
@@ -47,7 +54,7 @@ jobs:
     steps:
       - name: EnvVars
         run: |
-          echo "Using role: arn:aws:iam::$awsaccount_target:role/tbs-ci"
+          echo "Using role: arn:aws:iam::${{env.awsaccount_target}}:role/tbs-ci"
       - name: Checkout.
         uses: actions/checkout@v3
 
@@ -61,7 +68,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-2
           role-duration-seconds: 1200
-          role-to-assume: "arn:aws:iam::$awsaccount_target:role/tbs-ci"
+          role-to-assume: arn:aws:iam::${{env.awsaccount_target}}:role/tbs-ci
       # Build inside Docker containers
       - run: sam build --use-container
       - run: |
