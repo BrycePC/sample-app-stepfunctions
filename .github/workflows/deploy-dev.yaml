@@ -58,10 +58,10 @@ jobs:
       # Build inside Docker containers
       - run: sam build --use-container
       - run: |
-          echo Running against environment: $environment, account: $awsaccount
-          echo using deploy bucket: devops-ap-southeast-2-$awsaccount_tools-deploy
-          aws cloudformation deploy --debug --template-file ./.aws-sam/build/template.yaml --stack-name sample-app-stepfunction \
-            --role-arn "arn:aws:iam::$awsaccount_target:role/tbs-cfnexec-ci" \
-            --s3-bucket devops-ap-southeast-2-$awsaccount_tools-deploy --s3-prefix volatile/sam/$stack_name \
+          echo Running against environment: $environment, account: $awsaccount_target
+          echo using deploy bucket: devops-ap-southeast-2-905618979966-deploy
+          aws cloudformation deploy --debug --template-file ./.aws-sam/build/template.yaml --stack-name sample-app-stepfunctions-sand \
+            --role-arn "arn:aws:iam::887977420079:role/tbs-cfnexec-ci" \
+            --s3-bucket devops-ap-southeast-2-905618979966-deploy --s3-prefix volatile/sam/$stack_name \
             --capabilities CAPABILITY_IAM --region ap-southeast-2 --no-fail-on-empty-changeset \
-            --tags stackname=$stack_name environment=$environment system=$system
+            --tags stackname=sample-app-stepfunctions-sand environment=sand system=sample
