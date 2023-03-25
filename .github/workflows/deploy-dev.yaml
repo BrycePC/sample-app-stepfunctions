@@ -51,19 +51,20 @@ jobs:
         with:
           use-installer: true
 
-      - uses: aws-actions/configure-aws-credentials@v1
+      - uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-2
           role-duration-seconds: 1200
           role-to-assume: arn:aws:iam::905618979966:role/tbs-ci
+          role-session-name: GitHubActionsSamDeploy
       # Build inside Docker containers
       - run: sam build --use-container
       - run: |
           echo Running against environment: $environment, account: $awsaccount_target
           echo using deploy bucket: devops-ap-southeast-2-905618979966-deploy
-          aws cloudformation deploy --debug --template-file ./.aws-sam/build/template.yaml --stack-name sample-app-stepfunctions-sand \
+          sam deploy --template-file ./.aws-sam/build/template.yaml --stack-name sample-app-stepfunctions-sand \
             --role-arn "arn:aws:iam::887977420079:role/tbs-cfnexec-ci" \
             --s3-bucket devops-ap-southeast-2-905618979966-deploy --s3-prefix volatile/sam/$stack_name \
             --capabilities CAPABILITY_IAM --region ap-southeast-2 --no-fail-on-empty-changeset \
