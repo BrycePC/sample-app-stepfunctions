@@ -45,16 +45,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
-      awsaccount_tools: '905618979966'
-      awsaccount_target: '887977420079'
-      environment: sand
-      app_name: sample-app-stepfunctions
-      stack_name: sample-app-stepfunctions-sand
-      system: sample
     steps:
       - name: EnvVars
         run: |
-          echo "Using role: arn:aws:iam::${{env.awsaccount_target}}:role/tbs-ci"
+          echo "Deploying to target environment: ${{env.environment}}, account ${{env.awsaccount_target}}"
       - name: Checkout.
         uses: actions/checkout@v3
 
@@ -72,10 +66,9 @@ jobs:
       # Build inside Docker containers
       - run: sam build --use-container
       - run: |
-          echo Running against environment: $environment, account: $awsaccount_target
-          echo using deploy bucket: devops-ap-southeast-2-905618979966-deploy
-          sam deploy --template-file ./.aws-sam/build/template.yaml --stack-name $stack_name \
-            --role-arn "arn:aws:iam::$awsaccount_target:role/tbs-cfnexec-ci" \
+          echo Running against environment: ${{env.environment}}, account: ${{env.awsaccount_target}}
+          sam deploy --template-file ./.aws-sam/build/template.yaml --stack-name ${{env.stack_name}} \
+            --role-arn "arn:aws:iam::${{env.awsaccount_target}}:role/tbs-cfnexec-ci" \
             --s3-bucket devops-ap-southeast-2-905618979966-deploy --s3-prefix volatile/sam/$stack_name \
             --capabilities CAPABILITY_IAM --region ap-southeast-2 --no-fail-on-empty-changeset \
-            --tags stackname=$stack_name environment=$environment system=$system
+            --tags stackname=${{env.stack_name}} environment=${{env.environment}} system=${{env.system}}
