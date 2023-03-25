@@ -5,11 +5,12 @@ on:
     branches:
       - 'feature/**'
       - 'main'
-#  workflow_run: # initiate after checks are completed
-#    workflows: ["ci-checks"]
-#    branches:
-#      - 'main'
-#    types: [completed]
+  workflow_run: # initiate after checks are completed
+    workflows: ["ci-checks"]
+    branches:
+      - 'feature/**'
+      - 'main'
+    types: [completed]
 
 env:
   awsaccount_tools: '905618979966'
@@ -20,25 +21,25 @@ env:
   system: sample
 jobs:
 
-  #  if_checks_failed:
-  #    runs-on: ubuntu-latest
-  #    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-  #    steps:
-  #      - name: Checks failed.
-  #        shell: bash
-  #        run: |
-  #          echo "Checks failed." # see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_run
-  #          exit 1
-  #
-  #  if_checks_succeeded:
-  #    runs-on: ubuntu-latest
-  #    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-  #    steps:
-  #      - name: Checks passed.
-  #        shell: bash
-  #        run: |
-  #          echo "Checks succeeded." # see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_run
-  #          exit 0
+    if_checks_failed:
+      runs-on: ubuntu-latest
+      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+      steps:
+        - name: Checks failed.
+          shell: bash
+          run: |
+            echo "Checks failed." # see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_run
+            exit 1
+
+    if_checks_succeeded:
+      runs-on: ubuntu-latest
+      if: ${{ github.event.workflow_run.conclusion == 'success' }}
+      steps:
+        - name: Checks passed.
+          shell: bash
+          run: |
+            echo "Checks succeeded." # see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_run
+            exit 0
 
   sam_deploy:
     # needs: if_checks_succeeded
