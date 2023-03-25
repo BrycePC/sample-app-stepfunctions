@@ -1,0 +1,67 @@
+name: ci-checks
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+
+  cfnlint:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: cfnlint
+        uses: scottbrenner/cfn-lint-action@v2
+      - name: Print the Cloud Formation Linter Version & run Linter.
+        run: |
+          cfn-lint --version
+          cfn-lint -t ./template.yaml
+
+  cfnnag:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: cfnnag
+        uses: stelligent/cfn_nag@master
+        with:
+          input_path: template.yaml
+          extra_args: ''
+
+  cfnguard:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      #      - name: Configure AWS Credentials
+      #        uses: aws-actions/configure-aws-credentials@v1
+      #        with:
+      #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #          aws-region: ap-southeast-2
+
+      - name: cfnguard-reliability
+        uses: grolston/guard-action@main
+        with:
+          data_directory: './'
+          rule_set: wa-Reliability-Pillar
+
+      - name: cfnguard-security
+        uses: grolston/guard-action@main
+        with:
+          data_directory: './'
+          rule_set: wa-Security-Pillar
+
+#      - name: install CloudFormation Guard
+#        run: |
+#          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
+#          export PATH=~/.guard/bin:$PATH
+#          cfn-guard validate --rules ./cfnguards/aws --data ./template.yaml --show-summary fail -p
