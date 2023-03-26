@@ -15,6 +15,7 @@ env:
   app_name: sample-app-stepfunctions
   stack_name: sample-app-stepfunctions-sand
   system: sample
+
 jobs:
 
   if_checks_failed:
