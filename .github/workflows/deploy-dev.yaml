@@ -1,10 +1,6 @@
 name: ci-actions-volatile
 
 on:
-  push:
-    branches:
-      - 'feature/**'
-      - 'main'
   workflow_run: # initiate after checks are completed
     workflows: ["ci-checks"]
     branches:
@@ -42,7 +38,7 @@ jobs:
             exit 0
 
   sam_deploy:
-    # needs: if_checks_succeeded
+    needs: if_checks_succeeded
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -70,6 +66,6 @@ jobs:
           echo Running against environment: ${{env.environment}}, account: ${{env.awsaccount_target}}
           sam deploy --template-file ./.aws-sam/build/template.yaml --stack-name ${{env.stack_name}} \
             --role-arn "arn:aws:iam::${{env.awsaccount_target}}:role/tbs-cfnexec-ci" \
-            --s3-bucket devops-ap-southeast-2-905618979966-deploy --s3-prefix volatile/sam/$stack_name \
+            --s3-bucket devops-ap-southeast-2-905618979966-deploy --s3-prefix volatile/sam/${{env.stack_name}} \
             --capabilities CAPABILITY_IAM --region ap-southeast-2 --no-fail-on-empty-changeset \
             --tags stackname=${{env.stack_name}} environment=${{env.environment}} system=${{env.system}}

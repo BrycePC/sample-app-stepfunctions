@@ -1,9 +1,6 @@
 name: ci-checks
 
-on:
-  push:
-    branches:
-      - 'feature/**'
+on: push
 
 jobs:
 
