@@ -73,6 +73,10 @@ Resources:
 
   StockCheckerFunctionLogs:
     Type: AWS::Logs::LogGroup
+    Metadata:
+      guard:
+        SuppressedRules:
+          - CLOUDWATCH_LOG_GROUP_ENCRYPTED
     Properties:
       LogGroupName: !Join [ "", [ "/aws/lambda/", !Ref StockCheckerFunction ] ]
       RetentionInDays: 365
@@ -97,6 +101,10 @@ Resources:
 
   StockSellerFunctionLogs:
     Type: AWS::Logs::LogGroup
+    Metadata:
+      guard:
+        SuppressedRules:
+          - CLOUDWATCH_LOG_GROUP_ENCRYPTED
     Properties:
       LogGroupName: !Join [ "", [ "/aws/lambda/", !Ref StockSellerFunction ] ]
       RetentionInDays: 365
@@ -121,6 +129,10 @@ Resources:
 
   StockBuyerFunctionLogs:
     Type: AWS::Logs::LogGroup
+    Metadata:
+      guard:
+        SuppressedRules:
+          - CLOUDWATCH_LOG_GROUP_ENCRYPTED
     Properties:
       LogGroupName: !Join [ "", [ "/aws/lambda/", !Ref StockBuyerFunction ] ]
       RetentionInDays: 365

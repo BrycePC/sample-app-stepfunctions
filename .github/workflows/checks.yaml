@@ -36,6 +36,8 @@ jobs:
     env:
       working-directory: ./
     steps:
+      - run: |
+          echo "${{var.GITHUB_WORKSPACE}}"
       - name: Checkout
         uses: actions/checkout@v3
       #      - name: Configure AWS Credentials
@@ -48,13 +50,13 @@ jobs:
       - name: cfnguard-reliability
         uses: grolston/guard-action@main
         with:
-          data_directory: './cf/'
+          data_directory: './cloudformation/'
           rule_set: wa-Reliability-Pillar
 
       - name: cfnguard-security
         uses: grolston/guard-action@main
         with:
-          data_directory: './cf/'
+          data_directory: './cloudformation/'
           rule_set: wa-Security-Pillar
 
 #      - name: install CloudFormation Guard

@@ -61,7 +61,7 @@ jobs:
           role-duration-seconds: 1200
           role-to-assume: arn:aws:iam::${{env.awsaccount_target}}:role/tbs-ci
       # Build inside Docker containers
-      - run: sam build --use-container
+      - run: sam build -t ./cloudformation/template.yaml --use-container
       - run: |
           echo Running against environment: ${{env.environment}}, account: ${{env.awsaccount_target}}
           sam deploy --template-file ./.aws-sam/build/template.yaml --stack-name ${{env.stack_name}} \
