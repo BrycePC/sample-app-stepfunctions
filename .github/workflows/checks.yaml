@@ -37,7 +37,7 @@ jobs:
       working-directory: ./
     steps:
       - run: |
-          echo "${{env.GITHUB_WORKSPACE}}"
+          echo "$GITHUB_WORKSPACE"
       - name: Checkout
         uses: actions/checkout@v3
 
