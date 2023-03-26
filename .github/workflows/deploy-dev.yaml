@@ -36,6 +36,7 @@ jobs:
         run: |
           echo "Checks succeeded." # see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_run
           exit 0
+  
 
   sam_deploy:
     needs: if_checks_succeeded
