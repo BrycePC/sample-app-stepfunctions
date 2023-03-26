@@ -48,13 +48,13 @@ jobs:
       - name: cfnguard-reliability
         uses: grolston/guard-action@main
         with:
-          data_directory: './'
+          data_directory: '/cf/'
           rule_set: wa-Reliability-Pillar
 
       - name: cfnguard-security
         uses: grolston/guard-action@main
         with:
-          data_directory: './'
+          data_directory: '/cf/'
           rule_set: wa-Security-Pillar
 
 #      - name: install CloudFormation Guard
