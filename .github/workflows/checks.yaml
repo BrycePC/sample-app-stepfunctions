@@ -38,17 +38,18 @@ jobs:
     steps:
       - run: |
           echo $GITHUB_WORKSPACE
+          ls -l
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: cfnguard-reliability
         uses: grolston/guard-action@main
         with:
-          data_directory: './cloudformation/'
+          data_directory: $GITHUB_WORKSPACE/
           rule_set: wa-Reliability-Pillar
 
       - name: cfnguard-security
         uses: grolston/guard-action@main
         with:
-          data_directory: './cloudformation/'
+          data_directory: $GITHUB_WORKSPACE/
           rule_set: wa-Security-Pillar
