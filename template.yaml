@@ -15,15 +15,15 @@ Globals:
 Parameters:
   StockCheckerFunctionReservedConcurrency:
     Type: String
-    Default: 10
+    Default: 1
 
   StockSellerFunctionReservedConcurrency:
     Type: String
-    Default: 10
+    Default: 1
 
   StockBuyerFunctionReservedConcurrency:
     Type: String
-    Default: 10
+    Default: 1
 
 Resources:
   StockTradingStateMachine:
