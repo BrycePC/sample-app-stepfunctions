@@ -1,42 +1,27 @@
-name: ci-buildanddeploy
+name: ci-buildanddeploy-manual
+run-name: ci-buildanddeploy-manual- ${{ github.event.inputs.environment }} - ${{ github.ref_name }}-${{ github.sha }}
 
 on:
-  workflow_run: # initiate after checks are completed
-    workflows: ["ci-checks"]
-    branches:
-      - 'feature/**'
-    types: [completed]
+  workflow_dispatch:
+    environment:
+      type: choice
+      description: 'Environment: [ volatile | dev | uat | beta ]'
+      required: true
+      options:
+        - sand
+        - dev
 
 env:
   awsaccount_tools: '905618979966'
   awsaccount_target: '887977420079'
-  environment: sand
+  environment: ${{ github.event.inputs.environment }}
   app_name: sample-app-stepfunctions
   stack_name: sample-app-stepfunctions-sand
   system: sample
 
 jobs:
-  if_checks_failed:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - name: Checks failed.
-        shell: bash
-        run: |
-          echo "Checks failed." # see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_run
-          exit 1
-
-  if_checks_succeeded:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Checks passed.
-        shell: bash
-        run: |
-          echo "Checks succeeded." # see https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_run
-          exit 0
   sam_deploy:
-    needs: if_checks_succeeded
+    environment: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     env:
       working-directory: ./
