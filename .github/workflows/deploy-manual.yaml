@@ -3,13 +3,14 @@ run-name: ci-buildanddeploy-manual- ${{ github.event.inputs.environment }} - ${{
 
 on:
   workflow_dispatch:
-    environment:
-      type: choice
-      description: 'Environment: [ volatile | dev | uat | beta ]'
-      required: true
-      options:
-        - sand
-        - dev
+    inputs:
+      environment:
+        type: choice
+        description: 'Environment: [ volatile | dev | uat | beta ]'
+        required: true
+        options:
+          - sand
+          - dev
 
 env:
   awsaccount_tools: '905618979966'
